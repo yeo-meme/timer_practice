@@ -85,7 +85,7 @@
             background-image: url('./images/reset-default.png');
         }
 
-        
+
         .btn-start:disabled {
             background-image: url('./images/start-disabled.png');
             cursor: not-allowed;
@@ -110,7 +110,7 @@
                     <input type="number" id="hours" class="time-input" min="0" max="23" value="0">
                 </div>
                 <div class="input-group>
-                    <label for="minutes">MIN</label>
+                    <label for=" minutes">MIN</label>
                     <input type="number" id="minutes" class="time-input" min="0" max="59" value="0">
                 </div>
                 <div class="input-group">
@@ -142,8 +142,6 @@
                     this.timer = null;
                     this.totalSeconds = 0;
 
-                    // this.startBtn.disabled = true;
-                    // this.resetBtn.disabled = true;
 
                     const inputFields = [
                         this.hoursInput,
@@ -164,14 +162,13 @@
                 }
 
                 checkInputValues() {
-                // 시간 input 중 하나라도 0이 아닌 값이 있는지 확인
-                const hasValue = this.inputs.some(input => {
-                    const value = parseInt(input.value) || 0;
-                    return value > 0;
-                });
-                console.log(hasValue);
-                this.updateButtonStates(hasValue);
-            }
+                    const hasValue = this.inputs.some(input => {
+                        const value = parseInt(input.value) || 0;
+                        return value > 0;
+                    });
+                    console.log(hasValue);
+                    this.updateButtonStates(hasValue);
+                }
 
                 // initializeEventListeners() {
                 //     this.inputFields.forEach(field => {
@@ -182,20 +179,23 @@
                 // }
 
                 updateButtonStates(hasValue) {
+                    const isPaused = this.startBtn.classList.contains('btn-pause');
+
 
                     if (hasValue) {
                         this.startBtn.disabled = false;
                         this.resetBtn.disabled = false;
                     } else {
+                        if (isPaused) {
+                            this.startBtn.classList.remove('btn-pause');
+                            this.startBtn.classList.add('btn-start');
+                        }
                         this.startBtn.disabled = true;
                         this.resetBtn.disabled = true;
                     }
                 }
 
-                reset() {
-                    this.inputFields.forEach(field => field.value = '');
-                    // this.updateButtonStates();
-                }
+
 
                 toggleTimer() {
                     if (this.isRunning) {
@@ -231,20 +231,11 @@
                     this.hoursInput.value = 0;
                     this.minutesInput.value = 0;
                     this.secondsInput.value = 10;
-                    // this.updateButtonStates();
+                    this.updateButtonStates(false);
 
                 }
 
 
-                updateDisplay() {
-                    const h = Math.floor(this.totalSeconds / 3600);
-                    const m = Math.floor((this.totalSeconds % 3600) / 60);
-                    const s = this.totalSeconds % 60;
-
-                    this.hoursInput.value = h;
-                    this.minutesInput.value = m;
-                    this.secondsInput.value = s;
-                }
 
 
                 updateDisplay() {
@@ -298,6 +289,7 @@
                             this.totalSeconds = 0;
                             this.updateDisplay();
                             console.log("카운트 종료");
+                            this.updateButtonStates(false);
                             return;
                         }
 
