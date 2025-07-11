@@ -158,11 +158,12 @@
             font-weight: bold;
         }
 
-        time-time::-webkit-outer-spin-button,
+        .time-time::-webkit-outer-spin-button,
         .time-time::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
+
 
         .btn-start {
             background-image: url('./images/start-default.png');
@@ -217,7 +218,7 @@
                         </div>
                         <div class="time-separator">:</div>
                         <div class="time-unit">
-                            <label for=" minutes" class="time-label">MIN</label>
+                            <label for="minutes" class="time-label">MIN</label>
                             <input type="number" id="minutes" class="time-time" min="0" max="59" value="00">
                         </div>
                         <div class="time-separator">:</div>
@@ -267,7 +268,11 @@
                 bind() {
                     console.log('바인드');
                     this.inputs.forEach(time => {
-                        time.addEventListener('time', () => this.checkInputValues());
+                        time.addEventListener('input', () => this.checkInputValues());
+
+                        time.addEventListener('focus', function () {
+                            setTimeout(() => this.select(), 0);
+                        });
                     });
                 }
 
@@ -330,9 +335,9 @@
                     this.isRunning = false;
                     this.totalSeconds = 0;
 
-                    this.hoursInput.value = 0;
-                    this.minutesInput.value = 0;
-                    this.secondsInput.value = 10;
+                    this.hoursInput.value = "00";
+                    this.minutesInput.value = "00";
+                    this.secondsInput.value = "00";
                     this.updateButtonStates(false);
 
                 }
@@ -343,9 +348,9 @@
                     const m = Math.floor((this.totalSeconds % 3600) / 60);
                     const s = this.totalSeconds % 60;
 
-                    this.hoursInput.value = h;
-                    this.minutesInput.value = m;
-                    this.secondsInput.value = s;
+                    this.hoursInput.value = h.toString().padStart(2, '0');
+                    this.minutesInput.value = m.toString().padStart(2, '0');
+                    this.secondsInput.value = s.toString().padStart(2, '0');
                 }
 
                 startCountdown() {
