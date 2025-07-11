@@ -58,6 +58,20 @@
             text-align: center;
         }
 
+        .time-input {
+            width: 80px;
+            height: 80px;
+            background-image: url('./images/box.png');
+            background-size: cover;
+            background-position: center;
+            border: none;
+            outline: none;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 12px;
+        }
 
         .btn-start {
             background-image: url('./images/start-default.png');
@@ -68,13 +82,18 @@
         }
 
         .btn-reset {
-            background-image: url('./images/reset.png');
+            background-image: url('./images/reset-default.png');
         }
-
-        .btn:disabled {
-            opacity: 0.5;
+/* 
+        .btn-start:disabled {
+            background-image: url('./images/start-disabled.png');
             cursor: not-allowed;
         }
+
+        .btn-reset:disabled {
+            background-image: url('./images/reset-disabled.png');
+            cursor: not-allowed;
+        } */
     </style>
 </head>
 
@@ -100,8 +119,8 @@
             </div>
             <!--버튼-->
             <div class="controls">
-                <button id="control-btn" class="btn btn-start"></button>
-                <button id="reset-btn" class="btn btn-reset">Reset</button>
+                <button id="control-btn" class="btn btn-start" ></button>
+                <button id="reset-btn" class="btn btn-reset" ></button>
             </div>
         </div><!--타임컨테이너끝-->
 
@@ -110,6 +129,8 @@
         <script>
             class Timer {
                 constructor() {
+
+
                     this.hoursInput = document.getElementById('hours');
                     this.minutesInput = document.getElementById('minutes');
                     this.secondsInput = document.getElementById('seconds');
@@ -120,15 +141,58 @@
                     this.timer = null;
                     this.totalSeconds = 0;
 
+                    // this.startBtn.disabled = true;
+                    // this.resetBtn.disabled = true;
+
+                    const inputFields = [
+                        this.hoursInput,
+                        this.minutesInput,
+                        this.secondsInput
+                    ];
                     this.startBtn.addEventListener('click', () => this.toggleTimer());
                     this.resetBtn.addEventListener('click', () => this.resetCountdown());
 
+                    // this.initializeEventListeners();
+                    // this.updateButtonStates();
+                }
+
+                // initializeEventListeners() {
+                //     this.inputFields.forEach(field => {
+                //         field.addEventListener('input', () => {
+                //             this.updateButtonStates();
+                //         });
+                //     });
+                // }
+
+                // updateButtonStates() {
+                //     const hasAnyValue = this.inputFields.some(field =>
+                //         field.value.trim() !== ''
+                //     );
+
+                //     if (hasAnyValue) {
+                //         this.startBtn.disabled = false;
+                //         this.resetBtn.disabled = false;
+                //     } else {
+                //         this.startBtn.disabled = true;
+                //         this.resetBtn.disabled = true;
+                //     }
+                // }
+
+                reset() {
+                    this.inputFields.forEach(field => field.value = '');
+                    // this.updateButtonStates();
                 }
 
                 toggleTimer() {
                     if (this.isRunning) {
+                        this.startBtn.classList.remove('btn-pause');
+                        this.startBtn.classList.add('btn-start');
+                        this.isRunning = false;
                         this.pauseTimer();
                     } else {
+                        this.startBtn.classList.remove('btn-start');
+                        this.startBtn.classList.add('btn-pause');
+                        this.isRunning = true;
                         this.startCountdown();
                     }
                 }
@@ -153,6 +217,7 @@
                     this.hoursInput.value = 0;
                     this.minutesInput.value = 0;
                     this.secondsInput.value = 10;
+                    // this.updateButtonStates();
 
                 }
 
@@ -182,14 +247,14 @@
 
                     console.log("startCountdown");
 
-                    if (this.isRunning) {
-                        clearInterval(this.timer);
-                        this.isRunning = false;
-                        // this.startBtn.textContent = "Start";
-                        this.startBtn.classList.remove('btn-pause');
-                        this.startBtn.classList.add('btn-start');
-                        return;
-                    };
+                    // if (this.isRunning) {
+                    //     clearInterval(this.timer);
+                    //     this.isRunning = false;
+                    //     // this.startBtn.textContent = "Start";
+                    //     this.startBtn.classList.remove('btn-pause');
+                    //     this.startBtn.classList.add('btn-start');
+                    //     return;
+                    // };
                     console.log("실행시작");
                     this.isRunning = true;
                     // this.startBtn.textContent = "Pause";
