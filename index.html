@@ -35,24 +35,25 @@
 
                 this.isRunning = false;
 
-                this.init();
-
-                this.startBtn.addEventListener('click', () => this.init());
+                this.startBtn.addEventListener('click', () => this.startCountdown());
             }
 
-
-            init() {
-                const hours = parseInt(this.hoursInput.value) || 0;
-                const minutes = parseInt(this.minutesInput.value) || 0;
-                const seconds = parseInt(this.secondsInput.value) || 0;
-
-            console.log(hours + minutes + seconds);
-            return null;
-            }
 
             startCountdown() {
-                const hours = parseInt(document.getElementById('hours').value) || 0;
-                const minutes = parseInt(document.getElementById('minutes').value) || 0;
+                console.log("실행시작");
+                // let h = parseInt(this.hoursInput.value) || 0;
+                // let m = parseInt(this.minutesInput.value) || 0;
+                let s = parseInt(this.secondsInput.value) || 0;
+
+                const timer = setInterval(() => {
+                    console.log(s); // 초 로그 출력
+                    s--;
+
+                    if (s < 0) {
+                        clearInterval(timer);
+                        console.log("카운트 종료");
+                    }
+                }, 1000);
             }
         }
         const timer = new Timer();
