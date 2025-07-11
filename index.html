@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>위니브 구현</title>
     <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css');
+
+        * {
+            font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +20,6 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #c7d2fe 0%, #a5b4fc 50%, #8b5cf6 100%);
             min-height: 100vh;
             display: flex;
@@ -23,33 +29,84 @@
             position: relative;
         }
 
+        .btn {
+            /* 기본 스타일 완전 제거 */
+            border: none;
+            background: none;
+            padding: 0;
+            margin: 0;
+            outline: none;
+            cursor: pointer;
 
+            /* 이미지 설정 */
+            width: 112px;
+            height: 48px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .timer-container {
+            background: linear-gradient(145deg, #5b21b6, #7c3aed);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            backdrop-filter: blur(10px);
+            width: 400px;
+            text-align: center;
+        }
+
+
+        .btn-start {
+            background-image: url('./images/start-default.png');
+        }
+
+        .btn-pause {
+            background-image: url('./images/pause.png');
+        }
+
+        .btn-reset {
+            background-image: url('./images/reset.png');
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
+
 <body>
     <div>
-        <h1>타이머</h1>
-        <div class="time-inputs">
-            <div class="input-group">
-                <label for="hours">HRS</label>
-                <input type="number" id="hours" class="time-input" min="0" max="23" value="0">
-            </div>
-            <div class="input-group">
-                <label for="minutes">MIN</label>
-                <input type="number" id="minutes" class="time-input" min="0" max="59" value="0">
-            </div>
-            <div class="input-group">
-                <label for="seconds">SEC</label>
-                <input type="number" id="seconds" class="time-input" min="0" max="59" value="10">
-            </div>
+        <div class="logo">
+            <img src="./images/weniv-logo.svg" alt="weniv">
         </div>
-    
-        <!--버튼-->
-        <div class="controls">
-            <button id="control-btn" class="btn btn-start">Start</button>
-            <button id="reset-btn" class="btn btn-reset">Reset</button>
-        </div>
-    
+        <div class="timer-container">
+            <div class="time-inputs">
+                <div class="input-group">
+                    <label for="hours">HRS</label>
+                    <input type="number" id="hours" class="time-input" min="0" max="23" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="minutes">MIN</label>
+                    <input type="number" id="minutes" class="time-input" min="0" max="59" value="0">
+                </div>
+                <div class="input-group">
+                    <label for="seconds">SEC</label>
+                    <input type="number" id="seconds" class="time-input" min="0" max="59" value="10">
+                </div>
+            </div>
+            <!--버튼-->
+            <div class="controls">
+                <button id="control-btn" class="btn btn-start"></button>
+                <button id="reset-btn" class="btn btn-reset">Reset</button>
+            </div>
+        </div><!--타임컨테이너끝-->
+
+
+
         <script>
             class Timer {
                 constructor() {
@@ -58,16 +115,16 @@
                     this.secondsInput = document.getElementById('seconds');
                     this.startBtn = document.getElementById('control-btn');
                     this.resetBtn = document.getElementById('reset-btn');
-    
+
                     this.isRunning = false;
                     this.timer = null;
                     this.totalSeconds = 0;
-    
+
                     this.startBtn.addEventListener('click', () => this.toggleTimer());
                     this.resetBtn.addEventListener('click', () => this.resetCountdown());
-    
+
                 }
-    
+
                 toggleTimer() {
                     if (this.isRunning) {
                         this.pauseTimer();
@@ -75,64 +132,70 @@
                         this.startCountdown();
                     }
                 }
-    
-    
+
+
                 pauseTimer() {
                     console.log("포즈즈즈즈");
                     clearInterval(this.timer);
                     this.timer = null;
                     this.isRunning = false;
-                    this.startBtn.textContent = "Start";
+                    // this.startBtn.textContent = "Start";
+                    this.startBtn.classList.remove('btn-pause');
+                    this.startBtn.classList.add('btn-start');
                 }
-    
-    
+
+
                 resetCountdown() {
                     clearInterval(this.timer);
                     this.isRunning = false;
                     this.totalSeconds = 0;
-    
+
                     this.hoursInput.value = 0;
                     this.minutesInput.value = 0;
                     this.secondsInput.value = 10;
-    
+
                 }
-    
-    
+
+
                 updateDisplay() {
                     const h = Math.floor(this.totalSeconds / 3600);
                     const m = Math.floor((this.totalSeconds % 3600) / 60);
                     const s = this.totalSeconds % 60;
-    
+
                     this.hoursInput.value = h;
                     this.minutesInput.value = m;
                     this.secondsInput.value = s;
                 }
-    
-    
+
+
                 updateDisplay() {
                     const h = Math.floor(this.totalSeconds / 3600);
                     const m = Math.floor((this.totalSeconds % 3600) / 60);
                     const s = this.totalSeconds % 60;
-    
+
                     this.hoursInput.value = h;
                     this.minutesInput.value = m;
                     this.secondsInput.value = s;
                 }
-    
+
                 startCountdown() {
-    
+
                     console.log("startCountdown");
-    
+
                     if (this.isRunning) {
                         clearInterval(this.timer);
                         this.isRunning = false;
-                        this.startBtn.textContent = "Start";
+                        // this.startBtn.textContent = "Start";
+                        this.startBtn.classList.remove('btn-pause');
+                        this.startBtn.classList.add('btn-start');
                         return;
                     };
                     console.log("실행시작");
                     this.isRunning = true;
-                    this.startBtn.textContent = "Pause";
-    
+                    // this.startBtn.textContent = "Pause";
+                    this.startBtn.classList.remove('btn-start');
+                    this.startBtn.classList.add('btn-pause');
+
                     if (this.totalSeconds <= 0) {
                         this.totalSeconds =
                             (parseInt(this.hoursInput.value) || 0) * 3600 +
@@ -141,22 +204,24 @@
                     }
                     this.timer = setInterval(() => {
                         this.totalSeconds--;
-    
+
                         this.updateDisplay();
-    
+
                         if (this.totalSeconds <= 0) {
                             clearInterval(this.timer);
                             this.isRunning = false;
                             this.timer = null;
-                            this.startBtn.textContent = "Start";
-    
-    
-                            this.totalSeconds = 0;  
-                            this.updateDisplay(); 
+                            // this.startBtn.textContent = "Start";
+                            this.startBtn.classList.remove('btn-pause');
+                            this.startBtn.classList.add('btn-start');
+
+
+                            this.totalSeconds = 0;
+                            this.updateDisplay();
                             console.log("카운트 종료");
                             return;
                         }
-    
+
                     }, 1000);
                 }
             }
@@ -164,4 +229,5 @@
         </script>
     </div>
 </body>
+
 </html>
