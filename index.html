@@ -135,18 +135,33 @@
         }
 
         .time-time {
+            border: none;
+            outline: none;
+            background: transparent;
+
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            /* Firefox */
+            caret-color: transparent;
+
+            font-family: Pretendard;
+            font-weight: 700;
+            font-style: normal;
+            font-size: 40px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
             width: 80px;
             height: 80px;
             background-image: url('./images/box.png');
-            background-size: cover;
-            background-position: center;
-            border: none;
-            outline: none;
             color: white;
-            font-size: 24px;
             font-weight: bold;
-            text-align: center;
-            border-radius: 12px;
+        }
+
+        time-time::-webkit-outer-spin-button,
+        .time-time::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         .btn-start {
@@ -192,23 +207,23 @@
         </div>
         <div class="timer-container">
             <div class="inner-padding">
-                <h1 class="title">타이머</h1>
+                <h1 class="title">TIMER</h1>
                 <img src="./images/line.png" alt="" class="line">
                 <div class="time-display">
                     <div class="time-inputs">
                         <div class="time-unit">
                             <label for="hours" class="time-label">HRS</label>
-                            <time type="number" id="hours" class="time-time" min="0" max="23" value="0">
+                            <input type="number" id="hours" class="time-time" min="0" max="23" value="00">
                         </div>
                         <div class="time-separator">:</div>
                         <div class="time-unit">
                             <label for=" minutes" class="time-label">MIN</label>
-                            <time type="number" id="minutes" class="time-time" min="0" max="59" value="0">
+                            <input type="number" id="minutes" class="time-time" min="0" max="59" value="00">
                         </div>
                         <div class="time-separator">:</div>
                         <div class="time-unit">
                             <label for="seconds" class="time-label">SEC</label>
-                            <time type="number" id="seconds" class="time-time" min="0" max="59" value="0">
+                            <input type="number" id="seconds" class="time-time" min="0" max="59" value="00">
                         </div>
                     </div>
                 </div><!--timedisplay-->
