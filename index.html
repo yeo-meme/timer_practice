@@ -29,14 +29,32 @@
                 this.hoursInput = document.getElementById('hours');
                 this.minutesInput = document.getElementById('minutes');
                 this.secondsInput = document.getElementById('seconds');
-                this.startBtn = document.getElementById('start-btn');
+                this.startBtn = document.getElementById('control-btn');
                 this.resetBtn = document.getElementById('reset-btn');
                 this.status = document.getElementById('status');
 
                 this.isRunning = false;
 
                 this.init();
+
+                this.startBtn.addEventListener('click', () => this.init());
+            }
+
+
+            init() {
+                const hours = parseInt(this.hoursInput.value) || 0;
+                const minutes = parseInt(this.minutesInput.value) || 0;
+                const seconds = parseInt(this.secondsInput.value) || 0;
+
+            console.log(hours + minutes + seconds);
+            return null;
+            }
+
+            startCountdown() {
+                const hours = parseInt(document.getElementById('hours').value) || 0;
+                const minutes = parseInt(document.getElementById('minutes').value) || 0;
             }
         }
+        const timer = new Timer();
     </script>
 </div>
