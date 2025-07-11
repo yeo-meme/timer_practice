@@ -84,7 +84,8 @@
         .btn-reset {
             background-image: url('./images/reset-default.png');
         }
-/* 
+
+        
         .btn-start:disabled {
             background-image: url('./images/start-disabled.png');
             cursor: not-allowed;
@@ -93,7 +94,7 @@
         .btn-reset:disabled {
             background-image: url('./images/reset-disabled.png');
             cursor: not-allowed;
-        } */
+        }
     </style>
 </head>
 
@@ -108,7 +109,7 @@
                     <label for="hours">HRS</label>
                     <input type="number" id="hours" class="time-input" min="0" max="23" value="0">
                 </div>
-                <div class="input-group">
+                <div class="input-group>
                     <label for="minutes">MIN</label>
                     <input type="number" id="minutes" class="time-input" min="0" max="59" value="0">
                 </div>
@@ -119,8 +120,8 @@
             </div>
             <!--버튼-->
             <div class="controls">
-                <button id="control-btn" class="btn btn-start" ></button>
-                <button id="reset-btn" class="btn btn-reset" ></button>
+                <button id="control-btn" class="btn btn-start" disabled></button>
+                <button id="reset-btn" class="btn btn-reset" disabled></button>
             </div>
         </div><!--타임컨테이너끝-->
 
@@ -128,9 +129,9 @@
 
         <script>
             class Timer {
-                constructor() {
+                constructor(inputSelectors) {
 
-
+                    this.inputs = inputSelectors.map(selector => document.querySelector(selector));
                     this.hoursInput = document.getElementById('hours');
                     this.minutesInput = document.getElementById('minutes');
                     this.secondsInput = document.getElementById('seconds');
@@ -152,9 +153,25 @@
                     this.startBtn.addEventListener('click', () => this.toggleTimer());
                     this.resetBtn.addEventListener('click', () => this.resetCountdown());
 
-                    // this.initializeEventListeners();
-                    // this.updateButtonStates();
+                    this.bind();
                 }
+
+                bind() {
+                    console.log('바인드');
+                    this.inputs.forEach(input => {
+                        input.addEventListener('input', () => this.checkInputValues());
+                    });
+                }
+
+                checkInputValues() {
+                // 시간 input 중 하나라도 0이 아닌 값이 있는지 확인
+                const hasValue = this.inputs.some(input => {
+                    const value = parseInt(input.value) || 0;
+                    return value > 0;
+                });
+                console.log(hasValue);
+                this.updateButtonStates(hasValue);
+            }
 
                 // initializeEventListeners() {
                 //     this.inputFields.forEach(field => {
@@ -164,19 +181,16 @@
                 //     });
                 // }
 
-                // updateButtonStates() {
-                //     const hasAnyValue = this.inputFields.some(field =>
-                //         field.value.trim() !== ''
-                //     );
+                updateButtonStates(hasValue) {
 
-                //     if (hasAnyValue) {
-                //         this.startBtn.disabled = false;
-                //         this.resetBtn.disabled = false;
-                //     } else {
-                //         this.startBtn.disabled = true;
-                //         this.resetBtn.disabled = true;
-                //     }
-                // }
+                    if (hasValue) {
+                        this.startBtn.disabled = false;
+                        this.resetBtn.disabled = false;
+                    } else {
+                        this.startBtn.disabled = true;
+                        this.resetBtn.disabled = true;
+                    }
+                }
 
                 reset() {
                     this.inputFields.forEach(field => field.value = '');
@@ -290,7 +304,15 @@
                     }, 1000);
                 }
             }
-            const timer = new Timer();
+            // const timer = new Timer();
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => {
+                    const timer = new Timer(
+                        ['#hours', '#minutes', '#seconds']
+                    );
+                }, 500);
+
+            });
         </script>
     </div>
 </body>
