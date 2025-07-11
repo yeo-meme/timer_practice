@@ -29,9 +29,25 @@
             position: relative;
         }
 
+        .title {
+            font-family: Pretendard;
+            font-weight: 700;
+            font-style: Bold;
+            font-size: 24px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #FFFFFF;
+
+        }
+
         .logo {
             position: relative;
             margin-bottom: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
         }
 
         .logo img {
@@ -59,7 +75,7 @@
             background: linear-gradient(145deg, #5b21b6, #7c3aed);
             border-radius: 24px;
             height: 360px;
-            padding: 40px;
+            padding: 48px 44px 40px 44px;
             box-shadow:
                 0 25px 50px rgba(0, 0, 0, 0.2),
                 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
@@ -67,6 +83,14 @@
             width: 400px;
             text-align: center;
             position: relative;
+        }
+
+        .title {
+            margin-bottom: 23px;
+        }
+
+        .line {
+            margin-bottom: 32px;
         }
 
         .time-display {
@@ -77,17 +101,38 @@
             margin-bottom: 40px;
         }
 
+        .inner-padding {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
         .time-inputs {
             display: flex;
             align-items: center;
+            gap: 5px;
         }
 
         .time-unit {
             display: flex;
             flex-direction: column;
             align-items: center;
+
         }
 
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .time-separator {
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1;
+            align-self: center;
+            color: #8198D0;
+        }
 
         .time-time {
             width: 80px;
@@ -126,6 +171,17 @@
             background-image: url('./images/reset-disabled.png');
             cursor: not-allowed;
         }
+
+        .time-label {
+            font-family: Pretendard;
+            font-weight: 700;
+            font-size: 12px;
+            line-height: 100%;
+            letter-spacing: 0%;
+            text-align: center;
+            text-transform: uppercase;
+            color: #A5B6EE;
+        }
     </style>
 </head>
 
@@ -135,27 +191,33 @@
             <img src="./images/weniv-logo.svg" alt="weniv">
         </div>
         <div class="timer-container">
-            <div class="time-display">
-                <div class="time-inputs">
-                    <div class="time-unit">
-                        <label for="hours">HRS</label>
-                        <time type="number" id="hours" class="time-time" min="0" max="23" value="0">
+            <div class="inner-padding">
+                <h1 class="title">타이머</h1>
+                <img src="./images/line.png" alt="" class="line">
+                <div class="time-display">
+                    <div class="time-inputs">
+                        <div class="time-unit">
+                            <label for="hours" class="time-label">HRS</label>
+                            <time type="number" id="hours" class="time-time" min="0" max="23" value="0">
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <label for=" minutes" class="time-label">MIN</label>
+                            <time type="number" id="minutes" class="time-time" min="0" max="59" value="0">
+                        </div>
+                        <div class="time-separator">:</div>
+                        <div class="time-unit">
+                            <label for="seconds" class="time-label">SEC</label>
+                            <time type="number" id="seconds" class="time-time" min="0" max="59" value="0">
+                        </div>
                     </div>
-                    <div class="time-unit">
-                    <label for=" minutes">MIN</label>
-                        <time type="number" id="minutes" class="time-time" min="0" max="59" value="0">
-                    </div>
-                    <div class="time-unit">
-                        <label for="seconds">SEC</label>
-                        <time type="number" id="seconds" class="time-time" min="0" max="59" value="0">
-                    </div>
+                </div><!--timedisplay-->
+                <!--버튼-->
+                <div class="controls">
+                    <button id="control-btn" class="btn btn-start" disabled></button>
+                    <button id="reset-btn" class="btn btn-reset" disabled></button>
                 </div>
-            </div><!--timedisplay-->
-            <!--버튼-->
-            <div class="controls">
-                <button id="control-btn" class="btn btn-start" disabled></button>
-                <button id="reset-btn" class="btn btn-reset" disabled></button>
-            </div>
+            </div><!--이너패딩-->
         </div><!--타임컨테이너끝-->
 
 
