@@ -33,34 +33,101 @@
                 this.resetBtn = document.getElementById('reset-btn');
 
                 this.isRunning = false;
+                this.timer = null;
+                this.totalSeconds = 0;
 
-                this.startBtn.addEventListener('click', () => this.startCountdown());
+                this.startBtn.addEventListener('click', () => this.toggleTimer());
+                this.resetBtn.addEventListener('click', () => this.resetCountdown());
+
+            }
+
+            toggleTimer() {
+                if (this.isRunning) {
+                    this.pauseTimer();
+                } else {
+                    this.startCountdown();
+                }
             }
 
 
+            pauseTimer() {
+                console.log("포즈즈즈즈");
+                clearInterval(this.timer);
+                this.timer = null;
+                this.isRunning = false;
+                this.startBtn.textContent = "Start";
+            }
+
+
+            resetCountdown() {
+                clearInterval(this.timer);
+                this.isRunning = false;
+                this.totalSeconds = 0;
+
+                this.hoursInput.value = 0;
+                this.minutesInput.value = 0;
+                this.secondsInput.value = 10;
+
+            }
+
+
+            updateDisplay() {
+                const h = Math.floor(this.totalSeconds / 3600);
+                const m = Math.floor((this.totalSeconds % 3600) / 60);
+                const s = this.totalSeconds % 60;
+
+                this.hoursInput.value = h;
+                this.minutesInput.value = m;
+                this.secondsInput.value = s;
+            }
+
+
+            updateDisplay() {
+                const h = Math.floor(this.totalSeconds / 3600);
+                const m = Math.floor((this.totalSeconds % 3600) / 60);
+                const s = this.totalSeconds % 60;
+
+                this.hoursInput.value = h;
+                this.minutesInput.value = m;
+                this.secondsInput.value = s;
+            }
+
             startCountdown() {
+
+                console.log("startCountdown");
+
+                if (this.isRunning) {
+                    clearInterval(this.timer);
+                    this.isRunning = false;
+                    this.startBtn.textContent = "Start";
+                    return;
+                };
                 console.log("실행시작");
+                this.isRunning = true;
+                this.startBtn.textContent = "Pause";
 
-                let totalSeconds =
-                    (parseInt(this.hoursInput.value) || 0) * 3600 +
-                    (parseInt(this.minutesInput.value) || 0) * 60 +
-                    (parseInt(this.secondsInput.value) || 0);
+                if (this.totalSeconds <= 0) {
+                    this.totalSeconds =
+                        (parseInt(this.hoursInput.value) || 0) * 3600 +
+                        (parseInt(this.minutesInput.value) || 0) * 60 +
+                        (parseInt(this.secondsInput.value) || 0);
+                }
+                this.timer = setInterval(() => {
+                    this.totalSeconds--;
 
-                const timer = setInterval(() => {
+                    this.updateDisplay();
 
-                    totalSeconds--;
+                    if (this.totalSeconds <= 0) {
+                        clearInterval(this.timer);
+                        this.isRunning = false;
+                        this.timer = null;
+                        this.startBtn.textContent = "Start";
 
-                    const h = Math.floor(totalSeconds / 3600);
-                    const m = Math.floor((totalSeconds % 3600) / 60);
-                    const s = totalSeconds % 60;
 
-                    this.hoursInput.value = h;
-                    this.minutesInput.value = m;
-                    this.secondsInput.value = s;
-
-                    if (totalSeconds <= 0) {
-                        clearInterval(timer);
+                        this.totalSeconds = 0;  
+                        this.updateDisplay(); 
                         console.log("카운트 종료");
+                        return;
                     }
 
                 }, 1000);
